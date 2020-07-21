@@ -22,7 +22,7 @@
 
   <!-- CSS
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-  <link rel="stylesheet" href="css/global.css">
+  <link rel="stylesheet" href="{% static 'css/global.css' %}">
 
   <!-- JS
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
@@ -53,7 +53,7 @@
         <div class="circle--fluid--cell circle--fluid--secondary">
           <nav>
             <ul class="circle--inline">
-              <li><a href="signup.html">Sign Up</a></li>
+              <li><a href="{% url 'accounts:signup' %}">Sign Up</a></li>
               <li><a href="{% url 'accounts:login' %}">Log In</a></li>
             </ul>
           </nav>
@@ -61,6 +61,6 @@
       </div>
     </div>
   </header>
-
+{% block content %}{% endblock %}
 </body>
 </html>
