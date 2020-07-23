@@ -9,7 +9,7 @@ from . import forms
 class LoginView(generic.FormView):
     '''Login view'''
     form_class = AuthenticationForm
-    success_url = reverse_lazy('posts:all')
+    success_url = reverse_lazy('home')
     template_name = 'accounts/login.html'
 
     def get_form(self, form_class=None):
@@ -32,7 +32,7 @@ class LogoutView(generic.RedirectView):
 
 class SignupView(generic.CreateView):
     form_class = forms.UserCreateForm
-    success_url = reverse_lazy('login')
+    success_url = reverse_lazy('home')
     template_name = 'accounts/signup.html'
 
 
