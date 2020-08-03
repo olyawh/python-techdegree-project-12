@@ -60,7 +60,19 @@ class User(AbstractBaseUser, PermissionsMixin):
         return self.display_name
 
     def get_long_name(self):
-        return '{} (@{})'.format(self.display_name, self.username)        
+        return '{} (@{})'.format(self.display_name, self.username)
+
+    @property
+    def is_admin(self):
+        return self.is_staff
+
+
+class Skill(models.Model):
+    '''A model for a skill'''
+    name = models.CharField(max_length=100, unique=True)
+
+    def __str__(self):
+        return self.name                    
 
 
 
