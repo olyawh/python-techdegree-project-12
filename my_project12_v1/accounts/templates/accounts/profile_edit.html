@@ -1,0 +1,26 @@
+{% extends 'layout.html' %}
+
+{% load static %}
+
+{% block content %}
+
+  <div class="circle--actions--bar">
+    <nav class="bounds">
+      <ul class="circle--pill--list">
+        <li><a href="applications.html">Applications</a></li>
+        <li><a class="selected" href="profile.html">Profile</a></li>
+      </ul>
+    </nav>
+  </div>
+
+  <div class="bounds circle--page">
+    <div class="circle--page--header circle--fluid">
+      <div class="circle--fluid--cell circle--fluid--primary">
+        <h2>Profile</h2>
+      </div>
+      <div class="circle--fluid--cell circle--fluid--secondary">
+        <a class="button button-primary icon-on-left" href="profile.html">Save Changes</a>
+      </div>
+    </div>
+
+    {% endblock %}

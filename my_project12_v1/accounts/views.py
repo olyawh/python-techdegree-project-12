@@ -7,9 +7,14 @@ from django.shortcuts import get_object_or_404
 from django.views import generic
 from django.contrib import messages
 from django.http import HttpResponseRedirect
+from django.shortcuts import render
 
-from .models import User, UserManager
+from .models import User, UserManager, Profile
 from . import forms
+
+
+def home(request):
+    return render(request, 'accounts/profile_edit.html')
 
 
 class LoginView(generic.FormView):
@@ -47,7 +52,7 @@ class ChangeProfileView(LoginRequiredMixin, generic.UpdateView):
     fields = ['avatar', 'bio']
 
     def get_object(self, queryset=None):
-        return get_object_or_404(models.User, pk=self.kwargs.get('pk'))
+        return get_object_or_404(User, pk=self.kwargs.get('pk'))
 
 
     def get_success_url(self):
@@ -61,6 +66,11 @@ class ChangeProfileView(LoginRequiredMixin, generic.UpdateView):
 
 
 
+class ProfileView(LoginRequiredMixin, generic.DetailView):
+    model = Profile
+    template_name = 'accounts/profile.html'
+
+    
 
 
 
