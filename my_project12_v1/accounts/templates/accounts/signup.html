@@ -9,6 +9,11 @@
     {{ form.as_p }}
     <input type="submit" value="Signup" class="button-primary">
   </form>
+  <div class="border-top pt-3">
+    <small class="text-muted">
+      Do you have an account already?<a class="ml-2" href="{% url 'accounts:login' %}">Log In</a>
+    </small>
+  </div>
 </div>
 </div>
 {% endblock %}

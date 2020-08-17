@@ -5,6 +5,9 @@ from django.contrib.auth.models import (
 )
 
 from django.db import models
+from django.dispatch import receiver
+from django.db.models.signals import post_save
+from PIL import Image
 
 
 class UserManager(BaseUserManager):
@@ -53,13 +56,10 @@ class User(AbstractBaseUser, PermissionsMixin):
     REQUIRED_FIELDS = ['display_name', 'username']
 
     def __str__(self):
-        return '@{}'.format(self.username)
+        return self.username
 
     def get_short_name(self):
         return self.display_name
-
-    def get_long_name(self):
-        return '{} (@{})'.format(self.display_name, self.username)
 
     @property
     def is_admin(self):
@@ -85,7 +85,23 @@ class Profile(models.Model):
     avatar = models.ImageField(default='default.png', upload_to='profile_pics')
 
     def __str__(self):
-        return f'{self.user.username} Profile'
+        return self.user.username
+
+    def save(self):
+        super().save()  
+
+        img = Image.open(self.avatar.path)  
+
+        if img.height > 300 or img.width > 300:
+            output_size = (300, 300)
+            img.thumbnail(output_size)
+            img.save(self.avatar.path)
+
+
+@receiver(post_save, sender=User)
+def create_profile(sender, instance, created, **kwargs):
+    if created:
+        Profile.objects.create(user=instance)        
 
 
 

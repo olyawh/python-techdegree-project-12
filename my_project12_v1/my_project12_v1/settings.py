@@ -135,5 +135,7 @@ MEDIA_URL = '/media/'
 EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
 EMAIL_FILE_PATH = os.path.join(BASE_DIR, 'accounts_emails')
 
+LOGIN_REDIRECT_URL = 'home'
+
 
 

@@ -8,7 +8,7 @@
     <nav class="bounds">
       <ul class="circle--pill--list">
         <li><a href="applications.html">Applications</a></li>
-        <li><a class="selected" href="profile.html">Profile PROFILE TEST</a></li>
+        <li><a class="selected" href="profile.html">Profile</a></li>
       </ul>
     </nav>
   </div>
@@ -16,7 +16,7 @@
   <div class="bounds circle--page">
     <div class="circle--page--header circle--fluid">
       <div class="circle--fluid--cell circle--fluid--primary">
-        <h2>Profile</h2>
+        <h2>{{ user.username }}</h2>
       </div>
       <div class="circle--fluid--cell circle--fluid--secondary">
         <a class="button icon-on-left" href="profile_edit.html">Edit</a>
@@ -63,7 +63,7 @@
     <div class="grid-25 grid-push-5">
 
       <div class="circle--secondary--module">
-        <img class="circle--primary--avatar" src="{{ user.profile.image.url }}">
+        <img class="circle--primary--avatar" src="{{ user.profile.avatar.url }}">
       </div>
 
       <div class="circle--secondary--module">
@@ -87,6 +87,16 @@
         </ul>
       </div>
     </div>
+
+    <!--Update profile form -->
+
+    <form method="POST" enctype="multipart/form-data">
+      {% csrf_token %}
+        {{ form.as_p }}
+        {{ user_update_form }}
+        {{ profile_update_form }}
+          <input type="submit" value="Update Account" class="button-primary">
+    </form>
 
   </div>
 

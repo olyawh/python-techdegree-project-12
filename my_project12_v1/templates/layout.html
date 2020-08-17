@@ -57,14 +57,26 @@
         <div class="circle--fluid--cell circle--fluid--secondary">
           <nav>
             <ul class="circle--inline">
+              {% if user.is_authenticated %}
+              <li><a href="{% url 'accounts:profile' %}">Profile</a></li>
+              <li><a href="{% url 'accounts:logout' %}">Log Out</a></li>
+              {% else %}
               <li><a href="{% url 'accounts:signup' %}">Sign Up</a></li>
               <li><a href="{% url 'accounts:login' %}">Log In</a></li>
+              {% endif %}
             </ul>
           </nav>
         </div>
       </div>
     </div>
   </header>
+{% if messages %}
+   {% for message in messages %}
+      <div class="alert alert-{{ message.tags }}">
+          {{ message }}
+      </div>
+   {% endfor %}
+{% endif %}  
 {% block content %}{% endblock %}
 {% block js %}
 

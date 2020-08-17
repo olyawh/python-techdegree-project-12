@@ -1,5 +1,6 @@
-from django.contrib.auth import login, logout
+from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
 from django.urls import reverse_lazy, reverse
 from django.core.exceptions import PermissionDenied
@@ -7,7 +8,7 @@ from django.shortcuts import get_object_or_404
 from django.views import generic
 from django.contrib import messages
 from django.http import HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
 from .models import User, UserManager, Profile
 from . import forms
@@ -34,20 +35,23 @@ class LoginView(generic.FormView):
 
 
 class LogoutView(generic.RedirectView):
+    '''Log out view'''
     url = reverse_lazy('home')
-
+    
     def get(self, request, *args, **kwargs):
         logout(request)
         return super().get(request, *args, **kwargs)
 
 
 class SignupView(generic.CreateView):
+    '''Sign up view'''
     form_class = forms.UserCreateForm
     success_url = reverse_lazy('home')
     template_name = 'accounts/signup.html'
 
 
 class ChangeProfileView(LoginRequiredMixin, generic.UpdateView):
+    '''Update profile view'''
     model = User
     fields = ['avatar', 'bio']
 
@@ -66,11 +70,34 @@ class ChangeProfileView(LoginRequiredMixin, generic.UpdateView):
 
 
 
-class ProfileView(LoginRequiredMixin, generic.DetailView):
-    model = Profile
-    template_name = 'accounts/profile.html'
+#class ProfileView(LoginRequiredMixin, generic.DetailView):
+ #   '''Profile view'''
+  #  model = Profile
+   # template_name = 'accounts/profile.html'
 
-    
+@login_required
+def profile(request):
+    if request.method == 'POST':
+        user_update_form = forms.UserUpdateForm(
+            request.POST, 
+            instance=request.user)
+        profile_update_form = forms.ProfileUpdateForm(
+            request.POST, 
+            request.FILES,
+            instance=request.user.profile)
+        if user_update_form.is_valid() and profile_update_form.is_valid():
+            user_update_form.save()
+            profile_update_form.save()
+            return redirect('accounts:profile')
+    else:
+        user_update_form = forms.UserUpdateForm(instance=request.user)
+        profile_update_form = forms.ProfileUpdateForm(instance=request.user.profile)
+    data = {
+        'user_update_form': user_update_form,
+        'profile_update_form': profile_update_form,
+    }
+
+    return render(request, 'accounts/profile.html', data)    
 
 
 
