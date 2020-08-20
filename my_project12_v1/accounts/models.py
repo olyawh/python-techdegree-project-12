@@ -10,6 +10,8 @@ from django.db.models.signals import post_save
 from PIL import Image
 
 
+from multiselectfield import MultiSelectField
+
 class UserManager(BaseUserManager):
     def create_user(self, email, username, display_name=None, password=None):
         if not email:
@@ -67,11 +69,21 @@ class User(AbstractBaseUser, PermissionsMixin):
 
 
 class Skill(models.Model):
-    '''A model for a skill'''
-    name = models.CharField(max_length=100, unique=True)
+    '''A model for skills'''
+    JS = 'js'
+    SQL = 'sql'
+    PYTHON = 'py'    
+    SKILLS_LIST = (
+        (JS , "JavaScript Developer"),
+        (SQL , "SQL Database Specialist"),
+        (PYTHON, "Python Developer"),
+    )
+    name = models.CharField(choices=SKILLS_LIST, max_length=3, default=JS)
 
     def __str__(self):
-        return self.name       
+        return self.name.title()
+ 
+      
 
 
 class Profile(models.Model):
@@ -83,6 +95,7 @@ class Profile(models.Model):
     )
     
     avatar = models.ImageField(default='default.png', upload_to='profile_pics')
+    skills = models.ManyToManyField(Skill)
 
     def __str__(self):
         return self.user.username

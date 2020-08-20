@@ -53,27 +53,13 @@ class SignupView(generic.CreateView):
 class ChangeProfileView(LoginRequiredMixin, generic.UpdateView):
     '''Update profile view'''
     model = User
-    fields = ['avatar', 'bio']
-
-    def get_object(self, queryset=None):
-        return get_object_or_404(User, pk=self.kwargs.get('pk'))
+    fields = ['avatar', 'bio', 'skills']
 
 
-    def get_success_url(self):
-        return reverse_lazy('accounts:profile_detail', kwargs={'pk': self.get_object().id})
-
-
-    def form_valid(self, form):
-        if form.instance.user == self.request.user:
-            return super(ChangeProfileView, self).form_valid(form)
-        raise PermissionDenied        
-
-
-
-#class ProfileView(LoginRequiredMixin, generic.DetailView):
- #   '''Profile view'''
-  #  model = Profile
-   # template_name = 'accounts/profile.html'
+class ProfileView(LoginRequiredMixin, generic.DetailView):
+    '''Profile view'''
+    model = Profile
+    template_name = 'accounts/profile.html'
 
 @login_required
 def profile(request):
@@ -92,9 +78,12 @@ def profile(request):
     else:
         user_update_form = forms.UserUpdateForm(instance=request.user)
         profile_update_form = forms.ProfileUpdateForm(instance=request.user.profile)
+    profile = request.user.profile    
+    skills = profile.skills.all()    
     data = {
         'user_update_form': user_update_form,
         'profile_update_form': profile_update_form,
+        'skills': skills,
     }
 
     return render(request, 'accounts/profile.html', data)    
