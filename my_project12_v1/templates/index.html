@@ -43,17 +43,15 @@
         </thead>
         <tbody>
           <tr class="clickable-row" data-href="project.html">
+            {% for object in projects %}
             <td>
-              <h3>Invoice Delivery Tool</h3>
+              <h3>{{ object }}</h3>
+              {% endfor %}
             </td>
             <td class="circle--cell--right">
               <span class="secondary-label">Rails Developer</span>
             </td>
           </tr>
-          <tr class="clickable-row" data-href="project.html">
-            <td>
-              <h3>Twitter Client</h3>
-            </td>
             <td class="circle--cell--right">
               <span class="secondary-label">Designer</span>
             </td>

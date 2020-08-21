@@ -2,6 +2,8 @@
 
 {% block content %}
 
+<h1>Projects by {{ view.kwargs.username }} ({{ page_obj.paginator.count }})</h1>
+
       <div class="circle--filter circle--secondary--module">
         <h1>All Projects</h1>
         <ul class="circle--filter--list">
@@ -15,7 +17,6 @@
               <a class="button icon-on-left" href="?page=1">First</a>
               <a class="button icon-on-left" href="?page={{ page_obj.previous_page_number }}">Previous</a>
             {% endif %}
-
             {% for num in page_obj.paginator.page_range %}
               {% if page_obj.number == num %}
                 <a class="button button-primary" href="?page={{ num }}">{{ num }}</a>
@@ -23,13 +24,10 @@
                 <a class="button icon-on-left" href="?page={{ num }}">{{ num }}</a>
               {% endif %}
             {% endfor %}
-
             {% if page_obj.has_next %}
               <a class="button icon-on-left" href="?page={{ page_obj.next_page_number }}">Next</a>
               <a class="button icon-on-left" href="?page={{ page_obj.paginator.num_pages }}">Last</a>
             {% endif %}
-
-
           {% endif %}
         </ul>
       </div>

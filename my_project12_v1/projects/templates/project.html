@@ -18,7 +18,7 @@
       <div class="circle--article--header">
         <h4 class="circle--article--section">Project</h4>
         <h1 class="circle--article--title">{{ object.title }}</h1>
-        <p class="circle--article--byline">Project Owner: <a>{{ object.author }}</a></p>
+        <p class="circle--article--byline" >Project Owner: <a href="{% url 'projects:user_list_projects' object.author.username %}">{{ object.author }}</a></p>
       </div>
 
       <div class="circle--article--body">
