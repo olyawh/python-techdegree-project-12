@@ -27,3 +27,28 @@ class Project(models.Model):
     class Meta:
         ordering = ['-date_posted']    
 
+
+        
+class Position(models.Model):
+    '''A position model'''
+    title = models.CharField(max_length=100, unique=True)
+    project = models.ForeignKey(
+        Project,
+        on_delete=models.CASCADE, 
+        related_name='positions'
+        )
+    content = models.TextField()
+    date_posted = models.DateTimeField(default=timezone.now)
+    position_status = models.BooleanField(default=False)
+    skills = models.ManyToManyField(
+        'accounts.Skill', 
+        blank=True)
+
+    def __str__(self):
+        return self.title
+
+    class Meta:
+        ordering = ['-date_posted']    
+        
+        
+

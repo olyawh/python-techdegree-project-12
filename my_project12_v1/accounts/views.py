@@ -54,6 +54,7 @@ class ChangeProfileView(LoginRequiredMixin, generic.UpdateView):
     '''Update profile view'''
     model = User
     fields = ['avatar', 'bio', 'skills']
+    template_name = 'accounts/profile_edit.html'
 
 
 class ProfileView(LoginRequiredMixin, generic.DetailView):

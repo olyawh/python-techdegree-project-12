@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views import generic
-from .models import Project
+from .models import Project, Position
 from accounts.models import User
 
 
@@ -45,6 +45,16 @@ class CreateProjectView(LoginRequiredMixin, generic.CreateView):
     def form_valid(self, form):
         form.instance.author = self.request.user
         return super().form_valid(form)
+
+
+
+class CreatePositionView(LoginRequiredMixin, generic.CreateView):
+    '''Create position view'''
+    model = Position
+    fields = [
+        'title', 
+        'content'
+             ]      
 
 
 class UpdateProjectView(LoginRequiredMixin, UserPassesTestMixin, generic.UpdateView):

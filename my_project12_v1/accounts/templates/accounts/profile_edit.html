@@ -21,6 +21,15 @@
       <div class="circle--fluid--cell circle--fluid--secondary">
         <a class="button button-primary icon-on-left" href="profile.html">Save Changes</a>
       </div>
+
+      <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+          {{ form.as_p }}
+          {{ user_update_form }}
+          {{ profile_update_form }}
+            <input type="submit" value="Update Account" class="button-primary">
+      </form>
+   
     </div>
 
     {% endblock %}
