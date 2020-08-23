@@ -18,6 +18,7 @@ urlpatterns = [
     path('/project/<pk>/update/', UpdateProjectView.as_view(), name='project_update'),
     path('/project/<pk>/delete/', ProjectDeleteView.as_view(), name='project_delete'),
     path('/project/<pk>/', ProjectDetailView.as_view(), name='project_detail'),
+    path('/search/', views.search_projects, name='project_search'),
 ]
 
 

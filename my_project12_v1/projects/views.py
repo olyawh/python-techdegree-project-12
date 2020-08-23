@@ -1,4 +1,6 @@
 from django.shortcuts import render, get_object_or_404
+from django.db.models import Q
+
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views import generic
 from .models import Project, Position
@@ -47,7 +49,6 @@ class CreateProjectView(LoginRequiredMixin, generic.CreateView):
         return super().form_valid(form)
 
 
-
 class CreatePositionView(LoginRequiredMixin, generic.CreateView):
     '''Create position view'''
     model = Position
@@ -91,3 +92,14 @@ class ProjectDeleteView(LoginRequiredMixin, UserPassesTestMixin, generic.DeleteV
         return False  
 
 
+def search_projects(request):
+    '''Search projects function'''
+    context = {}
+    input_search = request.GET.get('q')
+    projects = Project.objects.filter(
+        Q(title__icontains=input_search) |
+        Q(content__icontains=input_search)
+    ).distinct()
+    context['projects'] = projects
+
+    return render(request, 'all_projects.html', context)       

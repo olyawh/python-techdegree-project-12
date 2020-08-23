@@ -12,6 +12,7 @@ from django.shortcuts import render, redirect
 
 from .models import User, UserManager, Profile
 from . import forms
+from projects.models import Project
 
 
 def home(request):
