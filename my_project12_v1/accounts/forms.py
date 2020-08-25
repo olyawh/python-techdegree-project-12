@@ -23,7 +23,7 @@ class UserUpdateForm(forms.ModelForm):
     '''User update form'''
     class Meta:
         fields = (
-            'username', 'email'
+            'username', 'email',
         )
         model = get_user_model()
 

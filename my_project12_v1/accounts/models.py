@@ -51,6 +51,9 @@ class User(AbstractBaseUser, PermissionsMixin):
     date_joined = models.DateTimeField(auto_now_add=True)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
+    avatar = models.ImageField(default='default.png', upload_to='profile_pics')
+    skills = models.ManyToManyField('Skill')
+
 
     objects = UserManager()
 
@@ -93,7 +96,7 @@ class Profile(models.Model):
         on_delete = models.CASCADE,
 
     )
-    
+    bio = models.CharField(max_length=140, blank=True, default='')
     avatar = models.ImageField(default='default.png', upload_to='profile_pics')
     skills = models.ManyToManyField(Skill)
 

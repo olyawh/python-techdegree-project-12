@@ -31,30 +31,25 @@
 
       <div class="circle--project--positions">
         <h2>Positions</h2>
-
         <ul class="circle--group--list">
+          {% for position in project.position.all %}
           <li>
-            <h3>{{ position.title }}</h3>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+            <h3>{{ position }}</h3>
             <a class="button button-primary">Apply</a>
           </li>
-          <li>
-            <h3>Designer</h3>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-            <a class="button button-primary button-inactive">Position Filled</a>
-          </li>
+          {% endfor %}
         </ul>
       </div>
-
     </div>
 
     <div class="grid-25 grid-push-5">
       <div class="circle--secondary--module">
         <h3>Project Needs</h3>
+        {% for position in project.position.all %}
         <ul class="circle--link--list">
-          <li><a>iOS Developer</a></li>
-          <li><a>Designer</a></li>
+          <li><a>{{ position }}</a></li>
         </ul>
+        {% endfor %}
       </div>
 
       <div class="circle--secondary--module">

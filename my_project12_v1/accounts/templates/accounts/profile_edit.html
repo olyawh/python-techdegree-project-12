@@ -8,28 +8,27 @@
     <nav class="bounds">
       <ul class="circle--pill--list">
         <li><a href="applications.html">Applications</a></li>
-        <li><a class="selected" href="profile.html">Profile</a></li>
+        <li><a class="selected" href="{% url 'accounts:profile' %}">Profile</a></li>
       </ul>
     </nav>
   </div>
-
   <div class="bounds circle--page">
     <div class="circle--page--header circle--fluid">
       <div class="circle--fluid--cell circle--fluid--primary">
-        <h2>Profile</h2>
+        <h2>{{ user.username }}</h2>
+        <div class="circle--fluid--cell circle--fluid--secondary">
+          <div class="circle--secondary--module">
+            <img class="circle--primary--avatar" src="{{ user.profile.avatar.url }}">
+          </div>
+        </div>
+        <form method="POST" enctype="multipart/form-data">
+          {% csrf_token %}
+            {{ form.as_p }}
+            {{ user_update_form }}
+            {{ profile_update_form }}
+              <input type="submit" value="Update Account" class="button-primary">
+        </form>
       </div>
-      <div class="circle--fluid--cell circle--fluid--secondary">
-        <a class="button button-primary icon-on-left" href="profile.html">Save Changes</a>
-      </div>
-
-      <form method="POST" enctype="multipart/form-data">
-        {% csrf_token %}
-          {{ form.as_p }}
-          {{ user_update_form }}
-          {{ profile_update_form }}
-            <input type="submit" value="Update Account" class="button-primary">
-      </form>
-   
     </div>
 
     {% endblock %}

@@ -7,7 +7,7 @@ from django.core.exceptions import PermissionDenied
 from django.shortcuts import get_object_or_404
 from django.views import generic
 from django.contrib import messages
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, Http404
 from django.shortcuts import render, redirect
 
 from .models import User, UserManager, Profile
@@ -53,9 +53,18 @@ class SignupView(generic.CreateView):
 
 class ChangeProfileView(LoginRequiredMixin, generic.UpdateView):
     '''Update profile view'''
-    model = User
+    model = Profile
     fields = ['avatar', 'bio', 'skills']
     template_name = 'accounts/profile_edit.html'
+    success_url = reverse_lazy('accounts:profile')
+
+    def test_func(self):
+        obj = self.get_object()
+        user = self.request.user
+        if obj == user:
+            return True
+        else:
+            raise Http404('Sorry, You can not update this profile')    
 
 
 class ProfileView(LoginRequiredMixin, generic.DetailView):
@@ -89,6 +98,4 @@ def profile(request):
     }
 
     return render(request, 'accounts/profile.html', data)    
-
-
 

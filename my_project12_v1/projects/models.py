@@ -15,7 +15,10 @@ class Project(models.Model):
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
     )
-    positions_required = models.TextField(blank=True)
+    position = models.ManyToManyField(
+        'Position', 
+        blank=True,
+        related_name='projects')
     project_status = models.BooleanField(default=False)
 
     def __str__(self):
@@ -49,6 +52,40 @@ class Position(models.Model):
 
     class Meta:
         ordering = ['-date_posted']    
-        
+
+
+class Application(models.Model):
+    '''An application model'''
+
+    STATUS = (
+        ('ACC', 'Accepted'),
+        ('DEC', 'Declined'),
+        ('AWA', 'Awaiting')
+    )
+
+    applicant = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name='applicants'
+    )        
+    project = models.ForeignKey(
+        Project, 
+        on_delete=models.CASCADE,
+        related_name='applied_project'
+    )
+    position = models.ForeignKey(
+        Position,
+        on_delete=models.CASCADE,
+        related_name='applied_position'
+    )        
+    status = models.CharField(
+        choices=STATUS,
+        max_length=3, default='ACC'
+    )
+    date_applied = models.DateTimeField(default=timezone.now)
+
+    class Meta:
+        ordering = ['-date_applied']
+        unique_together = ('applicant', 'position', 'project')
         
 

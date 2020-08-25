@@ -25,8 +25,8 @@ from .views import HomeView
 urlpatterns = [
     path('', HomeView.as_view(), name='home'),
     path('admin/', admin.site.urls),
-    path('accounts', include(('accounts.urls', 'accounts'), namespace='accounts')),
-    path('projects', include(('projects.urls', 'projects'), namespace='projects')),
+    path('accounts/', include(('accounts.urls', 'accounts'), namespace='accounts')),
+    path('projects/', include(('projects.urls', 'projects'), namespace='projects')),
 ] 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -40,7 +40,7 @@ class CreateProjectView(LoginRequiredMixin, generic.CreateView):
     fields = [
         'title', 
         'content', 
-        'positions_required',
+        'position',
              ]
     template_name = 'project_form.html'
 
@@ -55,7 +55,8 @@ class CreatePositionView(LoginRequiredMixin, generic.CreateView):
     fields = [
         'title', 
         'content'
-             ]      
+             ]  
+    template_name = 'project_form.html'                 
 
 
 class UpdateProjectView(LoginRequiredMixin, UserPassesTestMixin, generic.UpdateView):
@@ -64,7 +65,7 @@ class UpdateProjectView(LoginRequiredMixin, UserPassesTestMixin, generic.UpdateV
     fields = [
         'title', 
         'content', 
-        'positions_required',
+        'position',
              ]
     template_name = 'project_form.html'
 
