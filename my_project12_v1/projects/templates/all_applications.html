@@ -1,0 +1,53 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+
+  <div class="circle--actions--bar">
+    <nav class="bounds">
+      <ul class="circle--pill--list">
+        <li><a class="selected" href="applications.html">Applications</a></li>
+        <li><a href="profile.html">Profile</a></li>
+      </ul>
+    </nav>
+  </div>
+
+  <div class="bounds circle--page">
+    <div class="circle--page--header grid-100">
+      <h2>Applications</h2>
+    </div>
+
+    <div class="grid-25">
+      <div class="circle--filter circle--secondary--module">
+        <h4>Status</h4>
+        <ul class="circle--filter--list">
+          <li><a class="selected">All Applications</a></li>
+          {% for object in applications %}
+          <li><a class="selected" >{{ object }}</a></li>
+          {% endfor %}
+          {% if is_paginated %}
+          {% if page_obj.has_previous %}
+            <a class="button icon-on-left" href="?page=1">First</a>
+            <a class="button icon-on-left" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+          {% endif %}
+
+          {% for num in page_obj.paginator.page_range %}
+            {% if page_obj.number == num %}
+              <a class="button button-primary" href="?page={{ num }}">{{ num }}</a>
+            {% elif num > page_obj.number|add:"-3" and num < page_obj.number|add:"3" %}
+              <a class="button icon-on-left" href="?page={{ num }}">{{ num }}</a>
+            {% endif %}
+          {% endfor %}
+
+          {% if page_obj.has_next %}
+            <a class="button icon-on-left" href="?page={{ page_obj.next_page_number }}">Next</a>
+            <a class="button icon-on-left" href="?page={{ page_obj.paginator.num_pages }}">Last</a>
+          {% endif %}
+
+
+        {% endif %}
+
+        </ul>
+      </div>
+
+
+  {% endblock %}

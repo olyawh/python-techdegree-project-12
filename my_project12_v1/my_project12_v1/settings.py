@@ -43,7 +43,6 @@ INSTALLED_APPS = [
     'accounts',
     'myapp',
     'projects',
-    'multiselectfield',
 ]
 
 MIDDLEWARE = [

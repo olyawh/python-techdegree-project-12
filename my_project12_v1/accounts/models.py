@@ -8,9 +8,8 @@ from django.db import models
 from django.dispatch import receiver
 from django.db.models.signals import post_save
 from PIL import Image
+from projects.models import Application
 
-
-from multiselectfield import MultiSelectField
 
 class UserManager(BaseUserManager):
     def create_user(self, email, username, display_name=None, password=None):
@@ -99,6 +98,7 @@ class Profile(models.Model):
     bio = models.CharField(max_length=140, blank=True, default='')
     avatar = models.ImageField(default='default.png', upload_to='profile_pics')
     skills = models.ManyToManyField(Skill)
+    re_applications = models.ManyToManyField(Application)
 
     def __str__(self):
         return self.user.username

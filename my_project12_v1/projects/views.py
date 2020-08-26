@@ -3,7 +3,7 @@ from django.db.models import Q
 
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views import generic
-from .models import Project, Position
+from .models import Project, Position, Application
 from accounts.models import User
 
 
@@ -103,4 +103,13 @@ def search_projects(request):
     ).distinct()
     context['projects'] = projects
 
-    return render(request, 'all_projects.html', context)       
+    return render(request, 'all_projects.html', context)    
+
+
+class ApplicationListView(generic.ListView):
+    '''Project list view'''
+    model = Application
+    template_name = 'all_applications.html'
+    context_object_name = 'applications'
+    ordering = ['-date_applied']
+    paginate_by = 3       

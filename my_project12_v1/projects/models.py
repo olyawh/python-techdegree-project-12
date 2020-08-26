@@ -67,7 +67,7 @@ class Application(models.Model):
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
         related_name='applicants'
-    )        
+    )     
     project = models.ForeignKey(
         Project, 
         on_delete=models.CASCADE,
@@ -87,5 +87,8 @@ class Application(models.Model):
     class Meta:
         ordering = ['-date_applied']
         unique_together = ('applicant', 'position', 'project')
+
+    def __str__(self):
+        return '{} application for {}\'s {} position'.format(self.applicant, self.project, self.position )   
         
 
