@@ -12,7 +12,7 @@ from django.shortcuts import render, redirect
 
 from .models import User, UserManager, Profile
 from . import forms
-from projects.models import Project
+from projects.models import Project, Application
 
 
 def home(request):
@@ -71,6 +71,7 @@ class ProfileView(LoginRequiredMixin, generic.DetailView):
     '''Profile view'''
     model = Profile
     template_name = 'accounts/profile.html'
+    
 
 @login_required
 def profile(request):
@@ -90,12 +91,16 @@ def profile(request):
         user_update_form = forms.UserUpdateForm(instance=request.user)
         profile_update_form = forms.ProfileUpdateForm(instance=request.user.profile)
     profile = request.user.profile    
-    skills = profile.skills.all()    
+    skills = profile.skills.all()   
+    user_projects = Project.objects.filter(
+            author = request.user)
     data = {
         'user_update_form': user_update_form,
         'profile_update_form': profile_update_form,
         'skills': skills,
+        'user_projects': user_projects,
     }
 
     return render(request, 'accounts/profile.html', data)    
-
+         
+        

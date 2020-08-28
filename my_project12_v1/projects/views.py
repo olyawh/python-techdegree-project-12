@@ -113,3 +113,39 @@ class ApplicationListView(generic.ListView):
     context_object_name = 'applications'
     ordering = ['-date_applied']
     paginate_by = 3       
+
+
+class CreateApplicationView(LoginRequiredMixin, generic.CreateView):
+    '''Create apply for a project view'''
+    model = Application
+    fields = [
+        'project', 
+        'position',
+             ]
+    template_name = 'application_form.html'
+    success_url = '/'
+
+
+    def form_valid(self, form):
+        form.instance.applicant = self.request.user
+        return super().form_valid(form)
+
+
+class UpdateApplicationView(LoginRequiredMixin, UserPassesTestMixin, generic.UpdateView):
+    '''Update application view'''
+    model = Application
+    fields = [
+        'status',
+             ]
+    template_name = 'application_form.html'
+    success_url = '/'
+
+    def form_valid(self, form):
+        form.instance.applicant = self.request.user
+        return super().form_valid(form)
+
+    def test_func(self):
+        appl = self.get_object()
+        if self.request.user == appl.applicant:
+            return True
+        return False   

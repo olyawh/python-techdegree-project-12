@@ -1,0 +1,14 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<div class="bounds">
+  <div class="grid-30 centered">
+  <h1>Apply for a project</h1>
+  <form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Apply for a project" class="button-primary">
+  </form>
+</div>
+</div>
+{% endblock %}

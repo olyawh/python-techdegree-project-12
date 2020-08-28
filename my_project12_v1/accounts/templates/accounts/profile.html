@@ -7,7 +7,7 @@
   <div class="circle--actions--bar">
     <nav class="bounds">
       <ul class="circle--pill--list">
-        <li><a href="applications.html">Applications</a></li>
+        <li><a href="{% url 'projects:list_applications' %}">Applications</a></li>
         <li><a class="selected" href="{% url 'accounts:profile' %}">Profile</a></li>
       </ul>
     </nav>
@@ -32,31 +32,16 @@
       </div>
 
       <h2>Past Projects</h2>
-      <table class="u-full-width circle--table">
+      <ul>
+        <li><a class="selected">Coming soon</a></li>
+        {% for object in user_applics %}
+        <li><a class="selected">{{ object }}</a></li>
+        {% endfor %}
+      </ul>
         <thead>
-          <tr>
-            <th>Project Title</th>
-            <th class="circle--cell--right">Project Needs</th>
-          </tr>
+
         </thead>
-        <tbody>
-          <tr class="clickable-row" data-href="project.html">
-            <td>
-              <h3>Invoice Delivery Tool</h3>
-            </td>
-            <td class="circle--cell--right">
-              <span class="secondary-label">Rails Developer</span>
-            </td>
-          </tr>
-          <tr class="clickable-row" data-href="project.html">
-            <td>
-              <h3>Twitter Client</h3>
-            </td>
-            <td class="circle--cell--right">
-              <span class="secondary-label">Designer</span>
-            </td>
-          </tr>
-        </tbody>
+
       </table>
     </div>
 
@@ -84,8 +69,8 @@
       <div class="circle--secondary--module">
         <h4>My Projects</h4>
         <ul class="circle--link--list">
-          {% for project in projects %}
-          <li><a class="selected">{{ project }}</a></li>
+          {% for object in user_projects %}
+          <li><a class="selected">{{ object }}</a></li>
           {% endfor %}
         </ul>
       </div>

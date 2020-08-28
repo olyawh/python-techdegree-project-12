@@ -52,6 +52,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_staff = models.BooleanField(default=False)
     avatar = models.ImageField(default='default.png', upload_to='profile_pics')
     skills = models.ManyToManyField('Skill')
+    re_applications = models.ManyToManyField('projects.Application')
 
 
     objects = UserManager()

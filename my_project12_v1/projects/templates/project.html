@@ -35,7 +35,7 @@
           {% for position in project.position.all %}
           <li>
             <h3>{{ position }}</h3>
-            <a class="button button-primary">Apply</a>
+            <a class="button button-primary" href="{% url 'projects:application_create' %}">Apply</a>
           </li>
           {% endfor %}
         </ul>
