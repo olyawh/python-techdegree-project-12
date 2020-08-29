@@ -5,6 +5,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views import generic
 from .models import Project, Position, Application
 from accounts.models import User
+from django.http import HttpResponseRedirect, Http404
 
 
 class ProjectListView(generic.ListView):
@@ -130,6 +131,8 @@ class CreateApplicationView(LoginRequiredMixin, generic.CreateView):
         form.instance.applicant = self.request.user
         return super().form_valid(form)
 
+     
+
 
 class UpdateApplicationView(LoginRequiredMixin, UserPassesTestMixin, generic.UpdateView):
     '''Update application view'''
@@ -149,3 +152,15 @@ class UpdateApplicationView(LoginRequiredMixin, UserPassesTestMixin, generic.Upd
         if self.request.user == appl.applicant:
             return True
         return False   
+
+
+class UserApplicationListView(generic.ListView):
+    '''User applications list view'''
+    model = Application
+    template_name = 'user_applications.html'
+    context_object_name = 'applications'
+    paginate_by = 3
+
+    def get_queryset(self):
+        user = self.request.user
+        return Application.objects.filter(applicant=user).order_by('-date_applied')        

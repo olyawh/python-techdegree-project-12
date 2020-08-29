@@ -6,7 +6,7 @@
   <h1>Approve or reject the application</h1>
   <form method="POST">
     {% csrf_token %}
-    {{ form.as_p }}
+    {{ form.as_hidden }}
     <input type="submit" value="Approve or reject the application" class="button-primary">
   </form>
 </div>

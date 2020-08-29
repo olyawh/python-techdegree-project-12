@@ -8,7 +8,7 @@
           {% for object in projects %}
           <li><a class="selected" >{{ object }}</a></li>
           <li><a class="" >{{ object.content }}</a></li>
-          <li><a class="" href="{% url 'projects:user_list_projects' object.author.username %}">By: {{ object.author }}</a></li>
+          <li><a class="" href="{% url 'projects:user_list_projects' user.username %}">By: {{ object.author }}</a></li>
           {% endfor %}
           {% if is_paginated %}
             {% if page_obj.has_previous %}
