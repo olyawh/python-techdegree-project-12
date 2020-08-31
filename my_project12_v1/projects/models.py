@@ -2,6 +2,7 @@ from django.conf import settings
 from django.contrib.auth.models import User
 from django.utils import timezone
 from django.urls import reverse
+from django.template.defaultfilters import slugify
 
 from django.db import models
 
@@ -10,6 +11,7 @@ class Project(models.Model):
     '''A project model'''
     title = models.CharField(max_length=100, unique=True)
     content = models.TextField()
+    slug = models.SlugField(max_length=100, unique=True)
     date_posted = models.DateTimeField(default=timezone.now)
     author = models.ForeignKey(
         settings.AUTH_USER_MODEL,
@@ -23,6 +25,9 @@ class Project(models.Model):
 
     def __str__(self):
         return self.title
+
+    def slug(self):
+        return slugify(self.title)    
 
     def get_absolute_url(self):
         return reverse('projects:project_detail', kwargs={'pk': self.pk})    

@@ -22,22 +22,27 @@
       </div>
 
       <div class="circle--article--body">
-        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-
-        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-
-        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+        <p>{{ object.content }}</p>
       </div>
 
       <div class="circle--project--positions">
         <h2>Positions</h2>
         <ul class="circle--group--list">
-          {% for position in project.position.all %}
-          <li>
-            <h3>{{ position }}</h3>
-            <a class="button button-primary" href="{% url 'projects:application_create' %}">Apply</a>
-          </li>
-          {% endfor %}
+          {% if user != project.author %}
+            {% for position in project.position.all %}
+            <li>
+              <h3>{{ position }}</h3>
+              <a class="button button-primary" href="{% url 'projects:application_create' slug=project.title pk=position.id %}">Apply</a>
+            </li>
+            {% endfor %}
+          {% endif %}
+          {% if user == project.author %}
+            {% for position in project.position.all %}
+            <li>
+              <h3>{{ position }}</h3>
+            </li>
+            {% endfor %}
+          {% endif %}
         </ul>
       </div>
     </div>

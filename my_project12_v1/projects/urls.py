@@ -24,7 +24,7 @@ urlpatterns = [
     path('project/<pk>/', ProjectDetailView.as_view(), name='project_detail'),
     path('search/', views.search_projects, name='project_search'),
     path('applications/all/', ApplicationListView.as_view(), name='list_applications'),
-    path('applications/new/', CreateApplicationView.as_view(), name='application_create'),
+    path('applications/new/<slug>/<pk>/', CreateApplicationView.as_view(), name='application_create'),
     path('applications/<pk>/update/', UpdateApplicationView.as_view(), name='application_update'),
     path('applications/user/<pk>/', UserApplicationListView.as_view(), name='user_list_applications'),
     ]

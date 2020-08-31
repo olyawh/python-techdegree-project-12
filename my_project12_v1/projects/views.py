@@ -1,3 +1,4 @@
+from django.contrib.messages.views import SuccessMessageMixin
 from django.shortcuts import render, get_object_or_404
 from django.db.models import Q
 
@@ -116,22 +117,22 @@ class ApplicationListView(generic.ListView):
     paginate_by = 3       
 
 
-class CreateApplicationView(LoginRequiredMixin, generic.CreateView):
+class CreateApplicationView(LoginRequiredMixin, SuccessMessageMixin, generic.CreateView):
     '''Create apply for a project view'''
     model = Application
     fields = [
-        'project', 
-        'position',
+        'status',
              ]
     template_name = 'application_form.html'
     success_url = '/'
+    success_message = 'You have submitted your application:)'
 
 
     def form_valid(self, form):
         form.instance.applicant = self.request.user
-        return super().form_valid(form)
-
-     
+        form.instance.project = get_object_or_404(Project, title=self.kwargs.get('slug'))
+        form.instance.position = get_object_or_404(Position, id = self.kwargs.get('pk'))
+        return super(CreateApplicationView, self).form_valid(form)
 
 
 class UpdateApplicationView(LoginRequiredMixin, UserPassesTestMixin, generic.UpdateView):

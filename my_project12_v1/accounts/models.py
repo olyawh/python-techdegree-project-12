@@ -87,8 +87,6 @@ class Skill(models.Model):
         return self.name.title()
  
       
-
-
 class Profile(models.Model):
     '''Profile model'''
     user = models.OneToOneField(
@@ -104,7 +102,7 @@ class Profile(models.Model):
     def __str__(self):
         return self.user.username
 
-    def save(self):
+    def save(self, *args, **kwargs):
         super().save()  
 
         img = Image.open(self.avatar.path)  

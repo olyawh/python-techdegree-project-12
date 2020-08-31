@@ -1,3 +1,4 @@
+from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.contrib.auth.decorators import login_required
@@ -44,11 +45,13 @@ class LogoutView(generic.RedirectView):
         return super().get(request, *args, **kwargs)
 
 
-class SignupView(generic.CreateView):
+class SignupView(SuccessMessageMixin, generic.CreateView):
     '''Sign up view'''
     form_class = forms.UserCreateForm
     success_url = reverse_lazy('home')
     template_name = 'accounts/signup.html'
+    success_message = "You've been signed up and you can login now :)"
+    
 
 
 class ChangeProfileView(LoginRequiredMixin, generic.UpdateView):
