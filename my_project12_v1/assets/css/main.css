@@ -1,0 +1,17 @@
+
+#status input[type="checkbox"] {
+  display: none;
+}
+
+#status span {
+  display: inline-flex;
+  padding: 10px;
+  border: 2px solid #537d7b;
+  border-radius: 10px;
+  color: #537d7b;
+}
+
+#status input[type="checkbox"]:checked + span {
+  background-color: #537d7b;
+  color: black;
+}

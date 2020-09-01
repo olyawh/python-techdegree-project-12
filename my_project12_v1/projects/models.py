@@ -85,13 +85,12 @@ class Application(models.Model):
     )        
     status = models.CharField(
         choices=STATUS,
-        max_length=3, default='ACC'
+        max_length=3, default='AWA'
     )
     date_applied = models.DateTimeField(default=timezone.now)
 
     class Meta:
         ordering = ['-date_applied']
-        unique_together = ('applicant', 'position', 'project')
 
     def __str__(self):
         return '{} application for {}\'s {} position'.format(self.applicant, self.project, self.position )   

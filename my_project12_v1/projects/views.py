@@ -109,7 +109,7 @@ def search_projects(request):
 
 
 class ApplicationListView(generic.ListView):
-    '''Project list view'''
+    '''List view of all applications, by user and by others'''
     model = Application
     template_name = 'all_applications.html'
     context_object_name = 'applications'
@@ -135,28 +135,33 @@ class CreateApplicationView(LoginRequiredMixin, SuccessMessageMixin, generic.Cre
         return super(CreateApplicationView, self).form_valid(form)
 
 
-class UpdateApplicationView(LoginRequiredMixin, UserPassesTestMixin, generic.UpdateView):
+class UpdateApplicationView(
+    LoginRequiredMixin, SuccessMessageMixin,
+    UserPassesTestMixin, generic.UpdateView
+     ):
     '''Update application view'''
     model = Application
     fields = [
         'status',
              ]
-    template_name = 'application_form.html'
+    template_name = 'application_status_form.html'
     success_url = '/'
+    success_message = 'You have declined or accepted the application'
 
     def form_valid(self, form):
-        form.instance.applicant = self.request.user
+        form.instance.applicant = self.object.applicant
+        form.instance.position = self.object.position
         return super().form_valid(form)
 
     def test_func(self):
-        appl = self.get_object()
-        if self.request.user == appl.applicant:
+        obj = self.get_object()
+        if self.request.user == obj.project.author:
             return True
         return False   
 
 
 class UserApplicationListView(generic.ListView):
-    '''User applications list view'''
+    '''List view of applications by user'''
     model = Application
     template_name = 'user_applications.html'
     context_object_name = 'applications'
@@ -165,3 +170,15 @@ class UserApplicationListView(generic.ListView):
     def get_queryset(self):
         user = self.request.user
         return Application.objects.filter(applicant=user).order_by('-date_applied')        
+
+
+class UserProjectsApplicationsListView(generic.ListView):
+    '''List view of applications for user's projects'''
+    model = Application
+    template_name = 'applications.html'
+    context_object_name = 'my_applications'
+    paginate_by = 3
+
+    def get_queryset(self):
+        user = self.request.user
+        return Application.objects.filter(project__author=user).order_by('-date_applied')          

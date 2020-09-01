@@ -3,11 +3,14 @@
 {% block content %}
 <div class="bounds">
   <div class="grid-30 centered">
-  <h1>Approve or reject the application</h1>
+  <h2>Update status</h2>
   <form method="POST">
     {% csrf_token %}
-    {{ form.as_hidden }}
-    <input type="submit" value="Approve or reject the application" class="button-primary">
+    <p id="status">
+      <label><input type="checkbox" name="status" value="ACC"><span>Accepted</span></label>
+      <label><input type="checkbox" name="status" value="DEC"><span>Declined</span></label>
+    </p>
+    <input type="submit" value="Save" class="button-primary">
   </form>
 </div>
 </div>
