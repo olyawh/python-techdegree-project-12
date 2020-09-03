@@ -3,11 +3,12 @@ from django.contrib.auth.models import (
     BaseUserManager,
     PermissionsMixin
 )
-
+from django.contrib.auth.models import User
 from django.db import models
 from django.dispatch import receiver
 from django.db.models.signals import post_save
 from PIL import Image
+from django.conf import settings
 from projects.models import Application
 
 
@@ -52,7 +53,6 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_staff = models.BooleanField(default=False)
     avatar = models.ImageField(default='default.png', upload_to='profile_pics')
     skills = models.ManyToManyField('Skill')
-    re_applications = models.ManyToManyField('projects.Application')
 
 
     objects = UserManager()
@@ -97,7 +97,7 @@ class Profile(models.Model):
     bio = models.CharField(max_length=140, blank=True, default='')
     avatar = models.ImageField(default='default.png', upload_to='profile_pics')
     skills = models.ManyToManyField(Skill)
-    re_applications = models.ManyToManyField(Application)
+    re_applications = models.ManyToManyField('projects.Application')
 
     def __str__(self):
         return self.user.username
@@ -117,8 +117,4 @@ class Profile(models.Model):
 def create_profile(sender, instance, created, **kwargs):
     if created:
         Profile.objects.create(user=instance)        
-
-
-
-
 

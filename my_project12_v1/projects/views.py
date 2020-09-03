@@ -1,12 +1,17 @@
 from django.contrib.messages.views import SuccessMessageMixin
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, reverse
 from django.db.models import Q
+
+from notifications.signals import notify
+from django.contrib.auth.decorators import login_required
 
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views import generic
 from .models import Project, Position, Application
 from accounts.models import User
 from django.http import HttpResponseRedirect, Http404
+
+from django.contrib import messages
 
 
 class ProjectListView(generic.ListView):
@@ -151,6 +156,22 @@ class UpdateApplicationView(
     def form_valid(self, form):
         form.instance.applicant = self.object.applicant
         form.instance.position = self.object.position
+        if form.instance.status == 'ACC':
+            notify.send(
+                self.request.user,
+                recipient=self.object.applicant,
+                verb='Your application for {} position has been accepted.'.format(
+                        self.object.position,
+                    )
+                )
+        if form.instance.status == 'DEC':   
+                notify.send(
+                self.request.user,
+                recipient=self.object.applicant,
+                verb='Your application for {} position has bee declined.'.format(
+                    self.object.position
+                    )
+                )     
         return super().form_valid(form)
 
     def test_func(self):
@@ -165,7 +186,6 @@ class UserApplicationListView(generic.ListView):
     model = Application
     template_name = 'user_applications.html'
     context_object_name = 'applications'
-    paginate_by = 3
 
     def get_queryset(self):
         user = self.request.user
@@ -178,7 +198,15 @@ class UserProjectsApplicationsListView(generic.ListView):
     template_name = 'applications.html'
     context_object_name = 'my_applications'
     paginate_by = 3
+    
 
     def get_queryset(self):
         user = self.request.user
         return Application.objects.filter(project__author=user).order_by('-date_applied')          
+
+
+@login_required
+def view_notifications(request):
+    notifications = request.user.notifications.unread()
+    return render(request, 'notifications.html',
+                  {'notifications': notifications})    

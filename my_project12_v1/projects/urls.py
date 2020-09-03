@@ -29,6 +29,7 @@ urlpatterns = [
     path('applications/user/<pk>/', UserApplicationListView.as_view(), name='user_list_applications'),
     path('applications/touser/<pk>/', UserProjectsApplicationsListView.as_view(), name='applications'),
     path('applications/status/update/<pk>/', UpdateApplicationView.as_view(), name='application_update'),
+    path('applications/notifications/', views.view_notifications, name="notifications"),
     ]
 
 

@@ -8,12 +8,15 @@ from django.core.exceptions import PermissionDenied
 from django.shortcuts import get_object_or_404
 from django.views import generic
 from django.contrib import messages
-from django.http import HttpResponseRedirect, Http404
-from django.shortcuts import render, redirect
+from django.http import HttpResponseRedirect, Http404, HttpResponse
+from django.shortcuts import render, redirect, reverse 
+
 
 from .models import User, UserManager, Profile
 from . import forms
 from projects.models import Project, Application
+
+from django.template import loader
 
 
 def home(request):
@@ -52,7 +55,6 @@ class SignupView(SuccessMessageMixin, generic.CreateView):
     template_name = 'accounts/signup.html'
     success_message = "You've been signed up and you can login now :)"
     
-
 
 class ChangeProfileView(LoginRequiredMixin, generic.UpdateView):
     '''Update profile view'''
@@ -96,7 +98,7 @@ def profile(request):
     profile = request.user.profile    
     skills = profile.skills.all()   
     user_projects = Project.objects.filter(
-            author = request.user)
+            author = request.user)        
     data = {
         'user_update_form': user_update_form,
         'profile_update_form': profile_update_form,

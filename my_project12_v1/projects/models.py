@@ -4,8 +4,9 @@ from django.utils import timezone
 from django.urls import reverse
 from django.template.defaultfilters import slugify
 
-from django.db import models
+from django.db.models.signals import post_save
 
+from django.db import models
 
 class Project(models.Model):
     '''A project model'''
@@ -35,8 +36,7 @@ class Project(models.Model):
     class Meta:
         ordering = ['-date_posted']    
 
-
-        
+    
 class Position(models.Model):
     '''A position model'''
     title = models.CharField(max_length=100, unique=True)
@@ -92,7 +92,7 @@ class Application(models.Model):
     class Meta:
         ordering = ['-date_applied']
 
+
     def __str__(self):
         return '{} application for {}\'s {} position'.format(self.applicant, self.project, self.position )   
         
-
