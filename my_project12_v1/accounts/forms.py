@@ -34,4 +34,5 @@ class ProfileUpdateForm(forms.ModelForm):
         model = Profile  
         fields = (
             'avatar',
+            'bio',
         )  

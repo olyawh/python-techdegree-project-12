@@ -104,6 +104,7 @@ def profile(request):
         'profile_update_form': profile_update_form,
         'skills': skills,
         'user_projects': user_projects,
+        'profile': profile,
     }
 
     return render(request, 'accounts/profile.html', data)    

@@ -2,22 +2,31 @@
 
 {% block content %}
 
+<div class="circle--actions--bar">
+  <nav class="bounds">
+    <ul class="circle--pill--list">
+      <li><a class="selected" href="{% url 'projects:recom_list_projects' %}">Projects for you ❀</a></li>
+      <li><a href="{% url 'projects:applications' pk=user.id %}">Applications</a></li>
+      <li><a href="{% url 'accounts:profile' %}">Profile</a></li>
+    </ul>
+  </nav>
+</div>
       <div class="circle--filter circle--secondary--module">
         <h1>All Projects</h1>
         <ul class="circle--filter--list">
-          {% for object in projects %}
-          <li><a class="selected" >{{ object }}</a></li>
-          <li><a class="" >{{ object.content }}</a></li>
-          {% for position in object.position.all %}
-          <li><a class="selected>">{{ position }}</a></li>
-          {% if position.position_status == False %}
-          {% for skill in position.skills.all %}
-          <li><a class="selected>">Skills needed currently for a project {{ skill }}</a></li>
-          {% endfor %}
-          {% endif %}
-          {% endfor %}
-          <li><a class="" href="{% url 'projects:user_list_projects' user.username %}">By: {{ object.author }}</a></li>
-          {% endfor %}
+            {% for object in recom_projects %}
+              {% for position in object.position.all %}
+                {% if position.position_status == False %}
+                  <li><a class="selected" >{{ object }}</a></li>
+                  <li><a class="" >{{ object.content }}</a></li>
+                  <li><a class="selected>">{{ position }}</a></li>
+                  {% for skill in position.skills.all %}
+                  <li><a class="selected>">Skills needed currently for a project {{ skill }}</a></li>
+                  <li><a class="" href="{% url 'projects:user_list_projects' user.username %}">By: {{ object.author }}</a></li>
+                  {% endfor %}
+                {% endif %}
+              {% endfor %}
+            {% endfor %}
           {% if is_paginated %}
             {% if page_obj.has_previous %}
               <a class="button icon-on-left" href="?page=1">First</a>

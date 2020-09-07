@@ -75,12 +75,19 @@ class Skill(models.Model):
     '''A model for skills'''
     JS = 'js'
     SQL = 'sql'
-    PYTHON = 'py'    
+    PYTHON = 'py'  
+    CSS = 'css'  
+    DESIGN = 'des'
+    UX = 'ux'
     SKILLS_LIST = (
         (JS , "JavaScript Developer"),
         (SQL , "SQL Database Specialist"),
         (PYTHON, "Python Developer"),
+        (CSS, 'CSS knowledge'),
+        (DESIGN, 'Design basics'),
+        (UX, 'User experience'),
     )
+
     name = models.CharField(choices=SKILLS_LIST, max_length=3, default=JS)
 
     def __str__(self):
@@ -97,7 +104,6 @@ class Profile(models.Model):
     bio = models.CharField(max_length=140, blank=True, default='')
     avatar = models.ImageField(default='default.png', upload_to='profile_pics')
     skills = models.ManyToManyField(Skill)
-    re_applications = models.ManyToManyField('projects.Application')
 
     def __str__(self):
         return self.user.username

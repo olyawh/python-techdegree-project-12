@@ -6,6 +6,7 @@
     <nav class="bounds">
       <ul class="circle--pill--list">
         <li><a class="selected" href="applications.html">Applications</a></li>
+        <li><a href="{% url 'projects:recom_list_projects' %}">Projects for you ❀</a></li>
         <li><a href="{% url 'accounts:profile' %}">Profile</a></li>
       </ul>
     </nav>
@@ -22,8 +23,10 @@
         <ul class="circle--filter--list">
           <li><a class="selected">All Applications</a></li>
           {% for object in my_applications %}
+          {% if object.status == 'AWA' %}
             <li><a>{{ object }}</a></li>
               <a class="button button-outline" href="{% url 'projects:application_update' object.id %}">Update status</a>
+          {% endif %}    
           {% endfor %}
           <li><a class="selected">New Applications</a></li>
           <li><a class="selected">Accepted</a></li>

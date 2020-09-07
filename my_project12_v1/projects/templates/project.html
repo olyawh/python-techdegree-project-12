@@ -51,9 +51,15 @@
       <div class="circle--secondary--module">
         <h3>Project Needs</h3>
         {% for position in project.position.all %}
+        {% if position.position_status == True %}
         <ul class="circle--link--list">
-          <li><a>{{ position }}</a></li>
+          <li><a>{{ position }} is already filled</a></li>
         </ul>
+        {% else %}
+        <ul class="circle--link--list">
+          <li><a>Required: {{ position }} </a></li>
+        </ul>
+        {% endif %}
         {% endfor %}
       </div>
 

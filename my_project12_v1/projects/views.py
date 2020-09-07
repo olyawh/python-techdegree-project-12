@@ -8,7 +8,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views import generic
 from .models import Project, Position, Application
-from accounts.models import User
+from accounts.models import User, Skill, Profile
 from django.http import HttpResponseRedirect, Http404
 
 from django.contrib import messages
@@ -21,6 +21,23 @@ class ProjectListView(generic.ListView):
     context_object_name = 'projects'
     ordering = ['-date_posted']
     paginate_by = 3
+
+
+class RecomProjectListView(generic.ListView):
+    '''Project list view'''
+    model = Project
+    template_name = 'recom_projects.html'
+    context_object_name = 'recom_projects'
+    ordering = ['-date_posted']
+    paginate_by = 3
+
+
+    def get_queryset(self):
+        user = self.request.user
+        user_skills = Skill.objects.filter(user=user)
+        return Project.objects.filter(
+            position__skills__in=user_skills
+            ).order_by('-date_posted').exclude(author=user).distinct()
 
 
 class UserProjectListView(generic.ListView):
@@ -59,6 +76,7 @@ class CreateProjectView(LoginRequiredMixin, generic.CreateView):
 class CreatePositionView(LoginRequiredMixin, generic.CreateView):
     '''Create position view'''
     model = Position
+    context_object_name = 'positions'
     fields = [
         'title', 
         'content'
@@ -106,7 +124,8 @@ def search_projects(request):
     input_search = request.GET.get('q')
     projects = Project.objects.filter(
         Q(title__icontains=input_search) |
-        Q(content__icontains=input_search)
+        Q(content__icontains=input_search) |
+        Q(position__skills__name__icontains=input_search)
     ).distinct()
     context['projects'] = projects
 
@@ -156,7 +175,10 @@ class UpdateApplicationView(
     def form_valid(self, form):
         form.instance.applicant = self.object.applicant
         form.instance.position = self.object.position
+        position = Position.objects.get(applied_position__id=self.kwargs.get('pk'))
         if form.instance.status == 'ACC':
+            position.position_status = True
+            position.save()
             notify.send(
                 self.request.user,
                 recipient=self.object.applicant,

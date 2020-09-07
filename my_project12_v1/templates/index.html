@@ -22,14 +22,23 @@
         <ul class="circle--filter--list">
 
           <li><a class="selected">All Needs</a></li>
-          <li><a>Android Developer</a></li>
-          <li><a>Designer</a></li>
-          <li><a>Java Developer</a></li>
-          <li><a>PHP Developer</a></li>
-          <li><a>Python Developer</a></li>
-          <li><a>Rails Developer</a></li>
-          <li><a>WordPress Developer</a></li>
-          <li><a>iOS Developer</a></li>
+          {% for object in all_projects %}
+          
+          {% for position in object.position.all %}
+          {% if position.position_status == False %}
+          <li><a class='selected' href="{% url 'projects:project_detail' pk=object.pk %}">{{ position }} in {{ object }} is available</a></li>
+          <p>Position requires: </p>
+          {% for skill in position.skills.all %}
+          <span>{{ skill }}</span>
+          {% endfor %}
+          <hr>
+          {% endif %}
+          {% if position.position_status == True %}
+          <li><a>{{ position }} in {{ object }} is filled</a></li>
+          {% endif %}
+          {% endfor %}
+
+          {% endfor %}
         </ul>
       </div>
     </div>
@@ -38,23 +47,18 @@
       <table class="u-full-width circle--table">
         <thead>
           <tr>
-            <th>Project Title</th>
-            <th class="circle--cell--right">Project Needs</th>
           </tr>
         </thead>
         <tbody>
           <tr class="clickable-row" data-href="project.html">
-            {% for object in projects %}
             <td>
-              <h3>{{ object }}</h3>
-              {% endfor %}
-            </td>
+
             <td class="circle--cell--right">
-              <span class="secondary-label">Rails Developer</span>
+              <span class="secondary-label"></span>
             </td>
           </tr>
             <td class="circle--cell--right">
-              <span class="secondary-label">Designer</span>
+              <span class="secondary-label"></span>
             </td>
           </tr>
         </tbody>
