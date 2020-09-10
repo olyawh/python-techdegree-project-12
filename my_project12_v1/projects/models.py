@@ -1,12 +1,12 @@
 from django.conf import settings
 from django.contrib.auth.models import User
-from django.utils import timezone
-from django.urls import reverse
-from django.template.defaultfilters import slugify
-
-from django.db.models.signals import post_save
-
 from django.db import models
+from django.db.models.signals import post_save
+from django.template.defaultfilters import slugify
+from django.urls import reverse
+from django.utils import timezone
+
+
 
 class Project(models.Model):
     '''A project model'''
@@ -34,7 +34,9 @@ class Project(models.Model):
         return reverse('projects:project_detail', kwargs={'pk': self.pk})    
 
     class Meta:
-        ordering = ['-date_posted']    
+        ordering = ['-date_posted']  
+        verbose_name = 'Project'
+        verbose_name_plural = 'Projects'  
 
     
 class Position(models.Model):
@@ -57,6 +59,8 @@ class Position(models.Model):
 
     class Meta:
         ordering = ['-date_posted']    
+        verbose_name = 'Position'
+        verbose_name_plural = 'Positions'
 
 
 class Application(models.Model):
@@ -92,7 +96,5 @@ class Application(models.Model):
     class Meta:
         ordering = ['-date_applied']
 
-
     def __str__(self):
         return '{} application for {}\'s {} position'.format(self.applicant, self.project, self.position )   
-        

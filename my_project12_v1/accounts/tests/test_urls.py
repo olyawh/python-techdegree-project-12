@@ -1,18 +1,13 @@
 from django.test import SimpleTestCase
-from django.urls import reverse, resolve
+from django.urls import resolve, reverse
 
-from accounts.views import (
-                            home,
-                            LoginView,
-                            LogoutView,
-                            SignupView,
-                            profile,
-                            ChangeProfileView
-)
+from accounts.views import (ChangeProfileView, LoginView, LogoutView,
+                            SignupView, home, profile)
 
 
 class  TestUrls(SimpleTestCase):
     '''Testing urls of accounts app'''
+
 
     def test_blog_home_url(self):
         '''Testing accounts:blog-home url'''

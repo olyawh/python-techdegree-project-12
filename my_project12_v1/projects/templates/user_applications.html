@@ -24,22 +24,21 @@
         <ul class="circle--filter--list">
           <li><a class="selected">User Applications</a></li>
           {% for object in applications %}
-          <li><a class="selected" >{{ object }}</a></li>
+            <li><a class="selected" >{{ object }}</a></li>
           {% endfor %}
-          <li><a class="selected">Accepted</a></li>
-          {% for object in applications %}
-          {% if object.status == 'ACC' %}
-            <li><a>{{ object }}</a></li>
-          {% endif %}
-          {% endfor %}
-          <li><a class="selected">Rejected</a></li>
-          {% for object in applications %}
-          {% if object.status == 'DEC' %}
-            <li><a>{{ object }}</a></li>
-          {% endif %}
-          {% endfor %}
+            <li><a class="selected">Accepted</a></li>
+            {% for object in applications %}
+              {% if object.status == 'ACC' %}
+                <li><a>{{ object }}</a></li>
+              {% endif %}
+            {% endfor %}
+            <li><a class="selected">Rejected</a></li>
+            {% for object in applications %}
+              {% if object.status == 'DEC' %}
+                <li><a>{{ object }}</a></li>
+              {% endif %}
+            {% endfor %}
         </ul>
       </div>
-
 
   {% endblock %}

@@ -1,18 +1,16 @@
-from django.contrib.auth.models import (
-    AbstractBaseUser, 
-    BaseUserManager,
-    PermissionsMixin
-)
-from django.contrib.auth.models import User
-from django.db import models
-from django.dispatch import receiver
-from django.db.models.signals import post_save
-from PIL import Image
 from django.conf import settings
+from django.contrib.auth.models import (AbstractBaseUser, BaseUserManager,
+                                        PermissionsMixin, User)
+from django.db import models
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+from PIL import Image
+
 from projects.models import Application
 
 
 class UserManager(BaseUserManager):
+
     def create_user(self, email, username, display_name=None, password=None):
         if not email:
             raise ValueError("You should enter an email address")
@@ -27,7 +25,6 @@ class UserManager(BaseUserManager):
         user.set_password(password)
         user.save()
         return user
-
 
     def create_superuser(self, email, username, display_name, password):
         user = self.create_user(
@@ -53,7 +50,6 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_staff = models.BooleanField(default=False)
     avatar = models.ImageField(default='default.png', upload_to='profile_pics')
     skills = models.ManyToManyField('Skill')
-
 
     objects = UserManager()
 
@@ -123,4 +119,3 @@ class Profile(models.Model):
 def create_profile(sender, instance, created, **kwargs):
     if created:
         Profile.objects.create(user=instance)        
-

@@ -23,23 +23,23 @@
         <ul class="circle--filter--list">
           <li><a class="selected">All Applications</a></li>
           {% for object in my_applications %}
-          {% if object.status == 'AWA' %}
-            <li><a>{{ object }}</a></li>
-              <a class="button button-outline" href="{% url 'projects:application_update' object.id %}">Update status</a>
-          {% endif %}    
-          {% endfor %}
-          <li><a class="selected">New Applications</a></li>
-          <li><a class="selected">Accepted</a></li>
-          {% for object in my_applications %}
-          {% if object.status == 'ACC' %}
-            <li><a>{{ object }}</a></li>
-          {% endif %}
-          {% endfor %}
-          <li><a class="selected">Rejected</a></li>
-          {% for object in my_applications %}
-          {% if object.status == 'DEC' %}
-            <li><a>{{ object }}</a></li>
-          {% endif %}
+            {% if object.status == 'AWA' %}
+              <li><a>{{ object }}</a></li>
+                <a class="button button-outline" href="{% url 'projects:application_update' object.id %}">Update status</a>
+            {% endif %}    
+            {% endfor %}
+            <li><a class="selected">New Applications</a></li>
+            <li><a class="selected">Accepted</a></li>
+            {% for object in my_applications %}
+            {% if object.status == 'ACC' %}
+              <li><a>{{ object }}</a></li>
+            {% endif %}
+            {% endfor %}
+            <li><a class="selected">Rejected</a></li>
+            {% for object in my_applications %}
+            {% if object.status == 'DEC' %}
+              <li><a>{{ object }}</a></li>
+            {% endif %}
           {% endfor %}
         </ul>
       </div>

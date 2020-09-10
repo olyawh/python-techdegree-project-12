@@ -1,19 +1,12 @@
 from django.urls import path
-from .views import (
-                    ProjectListView, 
-                    ProjectDetailView, 
-                    CreateProjectView,
-                    UpdateProjectView,
-                    ProjectDeleteView,
-                    UserProjectListView,
-                    ApplicationListView,
-                    CreateApplicationView,
-                    UpdateApplicationView,
-                    UserApplicationListView,
-                    UserProjectsApplicationsListView,
-                    RecomProjectListView,
-                    )
+
 from . import views
+from .views import (ApplicationListView, CreateApplicationView,
+                    CreateProjectView, ProjectDeleteView, ProjectDetailView,
+                    ProjectListView, RecomProjectListView,
+                    UpdateApplicationView, UpdateProjectView,
+                    UserApplicationListView, UserProjectListView,
+                    UserProjectsApplicationsListView)
 
 app_name = 'projects'
 
@@ -33,5 +26,3 @@ urlpatterns = [
     path('applications/status/update/<pk>/', UpdateApplicationView.as_view(), name='application_update'),
     path('applications/notifications/', views.view_notifications, name="notifications"),
     ]
-
-

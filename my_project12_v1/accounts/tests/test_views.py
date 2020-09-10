@@ -1,13 +1,10 @@
-from django.test import TestCase, Client
-from django.urls import reverse
-from accounts.models import (
-                            UserManager,
-                            User,
-                            Skill,
-                            Profile
-                            )
 import json
+
 from django.contrib.auth import get_user_model
+from django.test import Client, TestCase
+from django.urls import reverse
+
+from accounts.models import Profile, Skill, User, UserManager
 
 
 class TestViews(TestCase):
@@ -48,4 +45,3 @@ class TestViews(TestCase):
         })
 
         self.assertEquals(resp.status_code, 302)      
-

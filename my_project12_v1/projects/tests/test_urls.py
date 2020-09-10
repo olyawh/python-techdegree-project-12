@@ -1,26 +1,19 @@
 from django.test import SimpleTestCase
-from django.urls import reverse, resolve
-from projects.views import (
-                            ProjectListView, 
-                            RecomProjectListView,
-                            UserProjectListView,
-                            CreateProjectView,
-                            UpdateProjectView,
-                            ProjectDeleteView,
-                            ProjectDetailView,
-                            search_projects,
-                            ApplicationListView,
-                            CreateApplicationView,
-                            UserApplicationListView,
-                            UserProjectsApplicationsListView,
-                            UpdateApplicationView,
-                            view_notifications
-                            )
+from django.urls import resolve, reverse
 
+from projects.views import (ApplicationListView, CreateApplicationView,
+                            CreateProjectView, ProjectDeleteView,
+                            ProjectDetailView, ProjectListView,
+                            RecomProjectListView, UpdateApplicationView,
+                            UpdateProjectView, UserApplicationListView,
+                            UserProjectListView,
+                            UserProjectsApplicationsListView, search_projects,
+                            view_notifications)
 
 
 class  TestUrls(SimpleTestCase):
     '''Testing urls of projects app'''
+
 
     def test_list_projects_url(self):
         '''Testing projects:list_projects url'''

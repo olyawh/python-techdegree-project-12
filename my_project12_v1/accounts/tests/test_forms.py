@@ -1,9 +1,6 @@
 from django.test import SimpleTestCase, TestCase
-from accounts.forms import (
-                            ProfileUpdateForm, 
-                            UserUpdateForm,
-                            UserCreateForm)
 
+from accounts.forms import ProfileUpdateForm, UserCreateForm, UserUpdateForm
 
 
 class TestForms(SimpleTestCase):
@@ -30,6 +27,7 @@ class TestForms(SimpleTestCase):
 class TestMoreForms(TestCase):
     '''Testing forms/accounts'''
 
+
     def test_user_update_form_valid_data(self):
         '''Testing user update form with valid data'''
         form = UserUpdateForm(data={
@@ -39,6 +37,7 @@ class TestMoreForms(TestCase):
         })
 
         self.assertTrue(form.is_valid())
+
 
     def test_user_update_form_wrong_data(self):
         '''Testing user update form with wrong data'''
@@ -78,7 +77,6 @@ class TestMoreForms(TestCase):
         self.assertEquals(len(form.errors), 4)
 
 
-
     def test_user_create_form_wrong_data(self):
         '''Testing user create form with wrong data'''
         form = UserCreateForm(data={
@@ -90,6 +88,3 @@ class TestMoreForms(TestCase):
 
         self.assertFalse(form.is_valid())
         self.assertEquals(len(form.errors), 2)
-
-
-

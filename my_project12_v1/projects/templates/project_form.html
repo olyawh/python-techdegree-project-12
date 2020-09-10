@@ -1,19 +1,23 @@
 {% extends 'layout.html' %}
 
 {% block content %}
+
 <div class="bounds">
   <div class="grid-30 centered">
   <h1>Project</h1>
-  <form method="POST">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <input type="submit" value="Create Project" class="button-primary">
-  </form>
-  <div class="border-top pt-3">
-    <small class="text-muted">
-      Do you have an account already?<a class="ml-2" href="#">Log In</a>
-    </small>
+    <form method="POST">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <h2>Positions</h2>
+      {{ positions.as_p }}
+      <input type="submit" value="Create Project" class="button-primary">
+    </form>
+    <div class="border-top pt-3">
+      <small class="text-muted">
+        Do you have an account already?<a class="ml-2" href="#">Log In</a>
+      </small>
+    </div>
   </div>
 </div>
-</div>
+
 {% endblock %}

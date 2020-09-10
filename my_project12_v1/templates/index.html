@@ -18,31 +18,26 @@
     <div class="grid-25">
       <div class="circle--filter circle--secondary--module">
         <h4>Project Needs</h4>
-
         <ul class="circle--filter--list">
-
           <li><a class="selected">All Needs</a></li>
           {% for object in all_projects %}
-          
-          {% for position in object.position.all %}
-          {% if position.position_status == False %}
-          <li><a class='selected' href="{% url 'projects:project_detail' pk=object.pk %}">{{ position }} in {{ object }} is available</a></li>
-          <p>Position requires: </p>
-          {% for skill in position.skills.all %}
-          <span>{{ skill }}</span>
-          {% endfor %}
-          <hr>
-          {% endif %}
-          {% if position.position_status == True %}
-          <li><a>{{ position }} in {{ object }} is filled</a></li>
-          {% endif %}
-          {% endfor %}
-
+            {% for position in object.position.all %}
+              {% if position.position_status == False %}
+                <li><a class='selected' href="{% url 'projects:project_detail' pk=object.pk %}">{{ position }} in {{ object }} is available</a></li>
+                <p>Position requires: </p>
+                  {% for skill in position.skills.all %}
+                  <span>{{ skill }}</span>
+                  {% endfor %}
+                    <hr>
+              {% endif %}
+              {% if position.position_status == True %}
+                <li><a>{{ position }} in {{ object }} is filled</a></li>
+              {% endif %}
+            {% endfor %}
           {% endfor %}
         </ul>
       </div>
     </div>
-
     <div class="grid-70 grid-push-5">
       <table class="u-full-width circle--table">
         <thead>
@@ -52,7 +47,6 @@
         <tbody>
           <tr class="clickable-row" data-href="project.html">
             <td>
-
             <td class="circle--cell--right">
               <span class="secondary-label"></span>
             </td>
@@ -65,4 +59,5 @@
       </table>
     </div>
   </div>
+
 {% endblock %}

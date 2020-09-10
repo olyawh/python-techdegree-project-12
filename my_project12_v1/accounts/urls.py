@@ -1,8 +1,9 @@
 from django.conf.urls import url
 from django.urls import path
-from . import views
 
-from .views import LoginView, LogoutView, SignupView, profile, ChangeProfileView
+from . import views
+from .views import (ChangeProfileView, LoginView, LogoutView, SignupView,
+                    profile)
 
 app_name = 'accounts'
 
@@ -14,18 +15,3 @@ urlpatterns = [
     path('profile/', views.profile, name='profile'),
     path('profile/update/<pk>/', ChangeProfileView.as_view(), name='profile_update'),
 ]
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -1,17 +1,17 @@
-from django.contrib.messages.views import SuccessMessageMixin
-from django.shortcuts import render, get_object_or_404, reverse
-from django.db.models import Q
-
-from notifications.signals import notify
-from django.contrib.auth.decorators import login_required
-
-from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from django.views import generic
-from .models import Project, Position, Application
-from accounts.models import User, Skill, Profile
-from django.http import HttpResponseRedirect, Http404
-
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.contrib.messages.views import SuccessMessageMixin
+from django.db.models import Q
+from django.http import Http404, HttpResponseRedirect
+from django.shortcuts import get_object_or_404, render, reverse
+from django.views import generic
+from notifications.signals import notify
+
+from accounts.models import Profile, Skill, User
+
+from .models import Application, Position, Project
+from django.forms.models import inlineformset_factory
 
 
 class ProjectListView(generic.ListView):
@@ -24,20 +24,19 @@ class ProjectListView(generic.ListView):
 
 
 class RecomProjectListView(generic.ListView):
-    '''Project list view'''
+    '''Recommended projects list view'''
     model = Project
     template_name = 'recom_projects.html'
     context_object_name = 'recom_projects'
     ordering = ['-date_posted']
     paginate_by = 3
 
-
     def get_queryset(self):
-        user = self.request.user
-        user_skills = Skill.objects.filter(user=user)
+        profile = self.request.user.profile
+        user_skills = Skill.objects.filter(profile=profile)
         return Project.objects.filter(
             position__skills__in=user_skills
-            ).order_by('-date_posted').exclude(author=user).distinct()
+            ).order_by('-date_posted').exclude(author=profile.user).distinct()
 
 
 class UserProjectListView(generic.ListView):
@@ -68,8 +67,22 @@ class CreateProjectView(LoginRequiredMixin, generic.CreateView):
              ]
     template_name = 'project_form.html'
 
+    def get_context_data(self, **kwargs):
+        data = super().get_context_data(**kwargs)
+        if self.request.POST:
+            data["positions"] = ChildFormset(self.request.POST)
+        else:
+            data["positions"] = ChildFormset()
+        return data
+
     def form_valid(self, form):
         form.instance.author = self.request.user
+        context = self.get_context_data()
+        positions = context["positions"]
+        self.object = form.save()
+        if positions.is_valid():
+            positions.instance = self.object
+            positions.save()
         return super().form_valid(form)
 
 
@@ -81,7 +94,11 @@ class CreatePositionView(LoginRequiredMixin, generic.CreateView):
         'title', 
         'content'
              ]  
-    template_name = 'project_form.html'                 
+    template_name = 'project_form.html'     
+
+ChildFormset = inlineformset_factory(
+    Project, Position, fields=('title',)
+)
 
 
 class UpdateProjectView(LoginRequiredMixin, UserPassesTestMixin, generic.UpdateView):
@@ -96,13 +113,27 @@ class UpdateProjectView(LoginRequiredMixin, UserPassesTestMixin, generic.UpdateV
 
     def form_valid(self, form):
         form.instance.author = self.request.user
+        context = self.get_context_data()
+        positions =context ['positions']
+        self.object = form.save()
+        if positions.is_valid():
+            positions.instance = self.object
+            positions.save()
         return super().form_valid(form)
 
     def test_func(self):
         project = self.get_object()
         if self.request.user == project.author:
             return True
-        return False    
+        return False  
+
+    def get_context_data(self, **kwargs):
+        data = super().get_context_data(**kwargs)
+        if self.request.POST:
+            data["positions"] = ChildFormset(self.request.POST, instance=self.object)
+        else:
+            data["positions"] = ChildFormset(instance=self.object)
+        return data
 
 
 class ProjectDeleteView(LoginRequiredMixin, UserPassesTestMixin, generic.DeleteView):
@@ -128,7 +159,6 @@ def search_projects(request):
         Q(position__skills__name__icontains=input_search)
     ).distinct()
     context['projects'] = projects
-
     return render(request, 'all_projects.html', context)    
 
 
@@ -150,7 +180,6 @@ class CreateApplicationView(LoginRequiredMixin, SuccessMessageMixin, generic.Cre
     template_name = 'application_form.html'
     success_url = '/'
     success_message = 'You have submitted your application:)'
-
 
     def form_valid(self, form):
         form.instance.applicant = self.request.user
@@ -221,7 +250,6 @@ class UserProjectsApplicationsListView(generic.ListView):
     context_object_name = 'my_applications'
     paginate_by = 3
     
-
     def get_queryset(self):
         user = self.request.user
         return Application.objects.filter(project__author=user).order_by('-date_applied')          

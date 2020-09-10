@@ -1,16 +1,18 @@
 {% extends 'layout.html' %}
 
 {% block content %}
+
 <div class="bounds">
   <div class="grid-30 centered">
-  <h1>Notifications</h1>
-  {% if notifications %}
-  {% for object in notifications %}
-     <h2>{{ object.verb }}</h2>
-     {% endfor %}
-     {% endif %}
-  <div class="border-top pt-3">
+    <h1>Notifications</h1>
+      {% if notifications %}
+        {% for object in notifications %}
+          <h2>{{ object.verb }}</h2>
+          {% endfor %}
+        {% endif %}
+      <div class="border-top pt-3">
+      </div>
   </div>
 </div>
-</div>
+
 {% endblock %}

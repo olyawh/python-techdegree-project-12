@@ -1,22 +1,21 @@
-from django.contrib.messages.views import SuccessMessageMixin
-from django.contrib.auth import login, logout, authenticate
-from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from django.contrib import messages
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
-from django.urls import reverse_lazy, reverse
+from django.contrib.auth.mixins import (LoginRequiredMixin,
+                                        PermissionRequiredMixin)
+from django.contrib.messages.views import SuccessMessageMixin
 from django.core.exceptions import PermissionDenied
-from django.shortcuts import get_object_or_404
-from django.views import generic
-from django.contrib import messages
-from django.http import HttpResponseRedirect, Http404, HttpResponse
-from django.shortcuts import render, redirect, reverse 
-
-
-from .models import User, UserManager, Profile
-from . import forms
-from projects.models import Project, Application
-
+from django.http import Http404, HttpResponse, HttpResponseRedirect
+from django.shortcuts import get_object_or_404, redirect, render, reverse
 from django.template import loader
+from django.urls import reverse, reverse_lazy
+from django.views import generic
+
+from projects.models import Application, Project
+
+from . import forms
+from .models import Profile, User, UserManager
 
 
 def home(request):
@@ -108,5 +107,3 @@ def profile(request):
     }
 
     return render(request, 'accounts/profile.html', data)    
-         
-        

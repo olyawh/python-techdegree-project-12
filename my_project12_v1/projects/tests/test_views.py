@@ -1,12 +1,10 @@
-from django.test import TestCase, Client
-from django.urls import reverse
-from projects.models import (
-                            Project,
-                            Position,
-                            Application
-                            )
 import json
+
 from django.contrib.auth import get_user_model
+from django.test import Client, TestCase
+from django.urls import reverse
+
+from projects.models import Application, Position, Project
 
 
 class TestViews(TestCase):
@@ -32,15 +30,6 @@ class TestViews(TestCase):
         )
         self.project_create_url = reverse('projects:project_create')
         self.application_create_url = reverse('projects:application_create', args=['some-slug', '2'])
-
-
-
-   # def test_project_list_view_GET(self):
-    #    '''Testing GET method project list view'''
-     #   resp = self.client.get(self.list_projects_url)
-
-      #  self.assertEquals(resp.status_code, 200)
-       # self.assertTemplateUsed(resp, 'all_projects.html', 'layout.html')
 
 
     def test_application_list_view_GET(self):
@@ -74,11 +63,8 @@ class TestViews(TestCase):
     def test_create_application_view_POST(self):
         '''Testing POST method create application view'''
 
-
         resp = self.client.post(self.application_create_url, {
             'status': 'Accepted',
         })
 
         self.assertEquals(resp.status_code, 302)    
-
-

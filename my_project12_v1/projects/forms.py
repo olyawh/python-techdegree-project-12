@@ -2,6 +2,7 @@ from django import forms
 
 from .models import Position, Project
 
+
 class ProjectForm(forms.ModelForm):
     '''A project form'''
     class Meta:
@@ -19,4 +20,3 @@ class PositionForm(forms.ModelForm):
             'title',
             'project',
         ]
-
