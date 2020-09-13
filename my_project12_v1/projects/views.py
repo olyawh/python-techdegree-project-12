@@ -7,6 +7,7 @@ from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render, reverse
 from django.views import generic
 from notifications.signals import notify
+from django.urls import reverse_lazy
 
 from accounts.models import Profile, Skill, User
 
@@ -57,6 +58,18 @@ class ProjectDetailView(generic.DetailView):
     template_name = 'project.html'
 
 
+class CreatePositionView(LoginRequiredMixin, generic.CreateView):
+    '''Create position view'''
+    model = Position
+    fields = [
+        'title', 
+        'content',
+        'project',
+        'skills'
+             ]
+    template_name = 'position_form.html'
+
+
 class CreateProjectView(LoginRequiredMixin, generic.CreateView):
     '''Create project view'''
     model = Project
@@ -64,42 +77,15 @@ class CreateProjectView(LoginRequiredMixin, generic.CreateView):
         'title', 
         'content', 
         'position',
+        'project_timeline',
+        'applicant_requirements',
              ]
     template_name = 'project_form.html'
 
-    def get_context_data(self, **kwargs):
-        data = super().get_context_data(**kwargs)
-        if self.request.POST:
-            data["positions"] = ChildFormset(self.request.POST)
-        else:
-            data["positions"] = ChildFormset()
-        return data
-
     def form_valid(self, form):
         form.instance.author = self.request.user
-        context = self.get_context_data()
-        positions = context["positions"]
-        self.object = form.save()
-        if positions.is_valid():
-            positions.instance = self.object
-            positions.save()
         return super().form_valid(form)
-
-
-class CreatePositionView(LoginRequiredMixin, generic.CreateView):
-    '''Create position view'''
-    model = Position
-    context_object_name = 'positions'
-    fields = [
-        'title', 
-        'content'
-             ]  
-    template_name = 'project_form.html'     
-
-ChildFormset = inlineformset_factory(
-    Project, Position, fields=('title',)
-)
-
+      
 
 class UpdateProjectView(LoginRequiredMixin, UserPassesTestMixin, generic.UpdateView):
     '''Update project view'''
@@ -108,17 +94,13 @@ class UpdateProjectView(LoginRequiredMixin, UserPassesTestMixin, generic.UpdateV
         'title', 
         'content', 
         'position',
+        'project_timeline',
+        'applicant_requirements',
              ]
     template_name = 'project_form.html'
 
     def form_valid(self, form):
         form.instance.author = self.request.user
-        context = self.get_context_data()
-        positions =context ['positions']
-        self.object = form.save()
-        if positions.is_valid():
-            positions.instance = self.object
-            positions.save()
         return super().form_valid(form)
 
     def test_func(self):
@@ -126,14 +108,6 @@ class UpdateProjectView(LoginRequiredMixin, UserPassesTestMixin, generic.UpdateV
         if self.request.user == project.author:
             return True
         return False  
-
-    def get_context_data(self, **kwargs):
-        data = super().get_context_data(**kwargs)
-        if self.request.POST:
-            data["positions"] = ChildFormset(self.request.POST, instance=self.object)
-        else:
-            data["positions"] = ChildFormset(instance=self.object)
-        return data
 
 
 class ProjectDeleteView(LoginRequiredMixin, UserPassesTestMixin, generic.DeleteView):
@@ -260,3 +234,7 @@ def view_notifications(request):
     notifications = request.user.notifications.unread()
     return render(request, 'notifications.html',
                   {'notifications': notifications})    
+
+
+        
+        

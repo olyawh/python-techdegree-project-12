@@ -8,6 +8,7 @@
         {% if object.author == user %}
           <a class="button" href="{% url 'projects:project_update' object.id %}">Edit Project</a>
           <a class="button button-text" href="{% url 'projects:project_delete' object.id %}">Delete Project</a>
+          <a class="button button-text" href="{% url 'projects:position_create' %}">Create Position</a>
         {% endif %}  
       </div>
     </div>
@@ -65,12 +66,12 @@
 
       <div class="circle--secondary--module">
         <h3>Project Timeline</h3>
-        <p>10 hours</p>
+        <p>{{ object.project_timeline }}</p>
       </div>
 
       <div class="circle--secondary--module">
         <h3>Applicant Requirements</h3>
-        <p>Applicants are required to work from our headquarters located in Antarctica.</p>
+        <p>{{ object.applicant_requirements }}</p>
       </div>
 
     </div>

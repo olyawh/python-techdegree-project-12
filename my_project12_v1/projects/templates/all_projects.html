@@ -6,7 +6,7 @@
         <h1>All Projects</h1>
         <ul class="circle--filter--list">
           {% for object in projects %}
-          <li><a class="selected" >{{ object }}</a></li>
+          <li><a class="selected" href="{% url 'projects:project_detail' pk=object.id %}" >{{ object }}</a></li>
           <li><a class="" >{{ object.content }}</a></li>
           {% for position in object.position.all %}
           <li><a class="selected>">{{ position }}</a></li>

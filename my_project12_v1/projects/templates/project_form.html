@@ -7,11 +7,19 @@
   <h1>Project</h1>
     <form method="POST">
       {% csrf_token %}
-      {{ form.as_p }}
-      <h2>Positions</h2>
-      {{ positions.as_p }}
+      <label>Title</label>
+      {{ form.title }}
+      <label>Content</label>
+      {{ form.content }}
+      <label>Project Timeline</label>
+      {{ form.project_timeline }}
+      <label>Project Position</label>
+      {{ form.position }}
+      <label>Applicant Requirements</label>
+      {{ form.applicant_requirements }}
       <input type="submit" value="Create Project" class="button-primary">
     </form>
+    
     <div class="border-top pt-3">
       <small class="text-muted">
         Do you have an account already?<a class="ml-2" href="#">Log In</a>

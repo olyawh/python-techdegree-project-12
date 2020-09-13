@@ -69,22 +69,22 @@ class User(AbstractBaseUser, PermissionsMixin):
 
 class Skill(models.Model):
     '''A model for skills'''
-    JS = 'js'
-    SQL = 'sql'
-    PYTHON = 'py'  
-    CSS = 'css'  
-    DESIGN = 'des'
-    UX = 'ux'
+    JS = 'JavaScript'
+    SQL = 'SQL'
+    PYTHON = 'Python'  
+    CSS = 'CSS'  
+    DESIGN = 'Design'
+    UX = 'UX'
     SKILLS_LIST = (
-        (JS , "JavaScript Developer"),
-        (SQL , "SQL Database Specialist"),
-        (PYTHON, "Python Developer"),
-        (CSS, 'CSS knowledge'),
-        (DESIGN, 'Design basics'),
+        (JS , "JavaScript"),
+        (SQL , "SQL Databases"),
+        (PYTHON, "Python"),
+        (CSS, 'CSS'),
+        (DESIGN, 'Design'),
         (UX, 'User experience'),
     )
 
-    name = models.CharField(choices=SKILLS_LIST, max_length=3, default=JS)
+    name = models.CharField(choices=SKILLS_LIST, max_length=10, default=JS)
 
     def __str__(self):
         return self.name.title()

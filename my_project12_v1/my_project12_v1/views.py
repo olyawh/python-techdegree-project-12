@@ -11,3 +11,5 @@ class HomeView(ListView):
     template_name = 'index.html'
     
     context_object_name = 'all_projects'
+
+    

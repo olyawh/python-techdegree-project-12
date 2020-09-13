@@ -11,7 +11,7 @@ from django.utils import timezone
 class Project(models.Model):
     '''A project model'''
     title = models.CharField(max_length=100, unique=True)
-    content = models.TextField()
+    content = models.TextField(blank=True)
     slug = models.SlugField(max_length=100, unique=True)
     date_posted = models.DateTimeField(default=timezone.now)
     author = models.ForeignKey(
@@ -23,6 +23,13 @@ class Project(models.Model):
         blank=True,
         related_name='projects')
     project_status = models.BooleanField(default=False)
+    project_timeline = models.TextField(max_length=200, blank=True)
+    applicant_requirements = models.TextField(
+                                            max_length=200,
+                                            default='Applicants are required '
+                                            'to be passionate about what they do'
+                                            )
+
 
     def __str__(self):
         return self.title
@@ -55,12 +62,13 @@ class Position(models.Model):
         blank=True)
 
     def __str__(self):
-        return self.title
+        return self.title 
+
+    def get_absolute_url(self):
+        return reverse('projects:project_detail', kwargs={'pk': self.project.id})    
 
     class Meta:
         ordering = ['-date_posted']    
-        verbose_name = 'Position'
-        verbose_name_plural = 'Positions'
 
 
 class Application(models.Model):

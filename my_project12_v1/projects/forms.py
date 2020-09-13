@@ -9,7 +9,6 @@ class ProjectForm(forms.ModelForm):
         model = Project
         fields = [
             'title',
-            'position',
         ]
 
 class PositionForm(forms.ModelForm):
